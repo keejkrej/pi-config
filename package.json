@@ -1,0 +1,10 @@
+{
+  "name": "pi-config",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Project-local Pi coding agent configuration and installer templates.",
+  "scripts": {
+    "setup:win": "@powershell -ExecutionPolicy Bypass -File install.ps1",
+    "setup:unix": "sh install.sh"
+  }
+}
