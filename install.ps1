@@ -84,8 +84,14 @@ function Install-ProjectSettings {
         New-Item -ItemType Directory -Path $targetDir -Force | Out-Null
     }
     $target = Join-Path $targetDir 'settings.json'
-    Copy-Item -Path $SettingsFileSrc -Destination $target -Force
-    Write-Log "installed project settings: $target"
+    $src = Resolve-Path $SettingsFileSrc
+    $dst = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($target)
+    if ($src.Path -eq $dst) {
+        Write-Log "project settings already present: $target"
+    } else {
+        Copy-Item -Path $SettingsFileSrc -Destination $target -Force
+        Write-Log "installed project settings: $target"
+    }
 }
 
 function Test-OllamaReachable {
