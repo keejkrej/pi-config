@@ -83,7 +83,7 @@ function Install-ModelsJson {
 }
 
 function Install-ProjectSettings {
-    $targetDir = Join-Path $RepoDir '.pi'
+    $targetDir = Join-Path (Get-Location) '.pi'
     if (-not (Test-Path $targetDir)) {
         New-Item -ItemType Directory -Path $targetDir -Force | Out-Null
     }

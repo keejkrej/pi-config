@@ -63,11 +63,15 @@ install_models_json() {
 }
 
 install_project_settings() {
-  local target="$REPO_DIR/.pi/settings.json"
-  mkdir -p "$REPO_DIR/.pi"
+  local target="$PWD/.pi/settings.json"
+  mkdir -p "$PWD/.pi"
   if [ -f "$SETTINGS_FILE_SRC" ]; then
-    cp "$SETTINGS_FILE_SRC" "$target"
-    log "installed project settings: $target"
+    if [ "$SETTINGS_FILE_SRC" -ef "$target" ]; then
+      log "project settings already present: $target"
+    else
+      cp "$SETTINGS_FILE_SRC" "$target"
+      log "installed project settings: $target"
+    fi
   else
     die "settings.json source not found at $SETTINGS_FILE_SRC"
   fi
