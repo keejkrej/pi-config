@@ -8,7 +8,7 @@ This repository automates the Pi coding-agent configuration shown in the screens
 - `pi-cursor-sdk`
 - `pi-thinking-steps`
 - `pi-mcp-adapter`
-- `@sampfp/pi-essentials`
+- `@samfp/pi-essentials`
 
 It also wires up an Ollama cloud provider pointing at `https://ollama.com/v1` so `pi` can use cloud models with an `OLLAMA_API_KEY`.
 

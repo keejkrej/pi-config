@@ -137,7 +137,7 @@ function Install-PiPackages {
         'pi-cursor-sdk',
         'pi-thinking-steps',
         'pi-mcp-adapter',
-        '@sampfp/pi-essentials'
+        '@samfp/pi-essentials'
     )
     foreach ($pkg in $packages) {
         try {
