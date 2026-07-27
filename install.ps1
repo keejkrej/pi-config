@@ -83,19 +83,12 @@ function Install-ModelsJson {
 }
 
 function Install-ProjectSettings {
-    $targetDir = Join-Path (Get-Location) '.pi'
-    if (-not (Test-Path $targetDir)) {
-        New-Item -ItemType Directory -Path $targetDir -Force | Out-Null
+    if (-not (Test-Path $AgentDir)) {
+        New-Item -ItemType Directory -Path $AgentDir -Force | Out-Null
     }
-    $target = Join-Path $targetDir 'settings.json'
-    $src = Resolve-Path $SettingsFileSrc
-    $dst = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($target)
-    if ($src.Path -eq $dst) {
-        Write-Log "project settings already present: $target"
-    } else {
-        Copy-Item -Path $SettingsFileSrc -Destination $target -Force
-        Write-Log "installed project settings: $target"
-    }
+    $target = Join-Path $AgentDir 'settings.json'
+    Copy-Item -Path $SettingsFileSrc -Destination $target -Force
+    Write-Log "installed settings: $target"
 }
 
 function Test-OllamaReachable {

@@ -32,7 +32,7 @@ sh install.sh
 2. Installs or updates the Pi coding-agent CLI globally.
 3. Makes sure the Pi agent directory exists (`~/.pi/agent/` on Unix, `%USERPROFILE%\.pi\agent\` on Windows).
 4. Copies `models.json` to the Pi agent directory, adding an `ollama` provider pointing at `https://ollama.com/v1`.
-5. Copies `.pi/settings.json` into the current project (this repo) so project-local settings and packages are loaded when you run `pi` here.
+5. Copies `.pi/settings.json` to `~/.pi/agent/settings.json` as global Pi user settings.
 6. Verifies the Ollama cloud endpoint and API key, then checks the default model (`kimi-k2.7-code` by default).
 7. Runs `pi update --all` to install the configured packages.
 
