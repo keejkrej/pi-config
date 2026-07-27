@@ -27,12 +27,12 @@
     "imageWidthCells": 60
   },
   "packages": [
-    "@plannotator/pi-extension",
-    "@ff-labs/pi-fff",
-    "pi-web-extension",
-    "pi-cursor-sdk",
-    "pi-thinking-steps",
-    "pi-mcp-adapter",
-    "@sampfp/pi-essentials"
+    "npm:@plannotator/pi-extension",
+    "npm:@ff-labs/pi-fff",
+    "npm:pi-web-extension",
+    "npm:pi-cursor-sdk",
+    "npm:pi-thinking-steps",
+    "npm:pi-mcp-adapter",
+    "npm:@sampfp/pi-essentials"
   ]
 }

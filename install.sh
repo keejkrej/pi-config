@@ -99,7 +99,7 @@ install_packages() {
   # If project settings were just written, pi should pick them up on next launch.
   # The following explicit installs are a safety net in case --all is slow/fails.
   for pkg in @plannotator/pi-extension @ff-labs/pi-fff pi-web-extension pi-cursor-sdk pi-thinking-steps pi-mcp-adapter @sampfp/pi-essentials; do
-    pi install "$pkg" || log "warning: failed to install $pkg (may already be installed or unavailable)"
+    pi install "npm:$pkg" || log "warning: failed to install npm:$pkg (may already be installed or unavailable)"
   done
 }
 

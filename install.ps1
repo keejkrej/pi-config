@@ -141,10 +141,10 @@ function Install-PiPackages {
     )
     foreach ($pkg in $packages) {
         try {
-            pi install $pkg 2>$null
-            Write-Log "installed $pkg"
+            pi install "npm:$pkg" 2>$null
+            Write-Log "installed npm:$pkg"
         } catch {
-            Write-Log "warning: failed to install $pkg (may already be installed or unavailable)"
+            Write-Log "warning: failed to install npm:$pkg (may already be installed or unavailable)"
         }
     }
 }
