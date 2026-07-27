@@ -2,7 +2,7 @@
 <#
 .SYNOPSIS
     pi-config installer for Windows.
-    Automates the setup shown in IMG_1156 plus an Ollama local model provider.
+    Automates the setup shown in IMG_1156 plus an Ollama cloud model provider.
 #>
 [CmdletBinding()]
 param(
@@ -19,10 +19,12 @@ if (-not $OllamaHost) { $OllamaHost = 'ollama.com' }
 if (-not $OllamaModel) { $OllamaModel = 'kimi-k2.7-code' }
 
 if ($OllamaHost -notmatch '^https?://') {
-    $OllamaUri = "http://$OllamaHost"
+    $OllamaUri = "https://$OllamaHost"
 } else {
     $OllamaUri = $OllamaHost
 }
+
+$OllamaApiUrl = ($OllamaUri -replace '/v1$', '')
 
 $RepoDir = $PSScriptRoot
 if (-not $RepoDir) { $RepoDir = Get-Location }
@@ -50,12 +52,14 @@ function Require-Node {
 function Install-PiCli {
     if (Test-Command pi) {
         Write-Log "pi already installed."
-        try {
-            $ver = pi --version 2>$null
-            Write-Log "version: $ver"
-        } catch {}
+        $ver = pi --version 2>$null
+        Write-Log "version: $ver"
         Write-Log "updating pi..."
-        pi update --self 2>$null || npm install -g --ignore-scripts $PI_PACKAGE
+        $LASTEXITCODE = 0
+        pi update --self 2>$null
+        if ($LASTEXITCODE -ne 0) {
+            npm install -g --ignore-scripts $PI_PACKAGE
+        }
     } else {
         Write-Log "installing pi..."
         npm install -g --ignore-scripts $PI_PACKAGE
@@ -100,7 +104,7 @@ function Test-OllamaReachable {
     }
     try {
         $headers = @{ Authorization = "Bearer $env:OLLAMA_API_KEY" }
-        $null = Invoke-RestMethod -Uri "$OllamaUri/" -Method Get -Headers $headers -TimeoutSec 5 -ErrorAction Stop
+        $null = Invoke-RestMethod -Uri "$OllamaApiUrl/v1/models" -Method Get -Headers $headers -TimeoutSec 15 -ErrorAction Stop
         return $true
     } catch {
         return $false
@@ -109,19 +113,20 @@ function Test-OllamaReachable {
 
 function Pull-OllamaModel {
     if (-not $env:OLLAMA_API_KEY) {
-        throw "OLLAMA_API_KEY environment variable is required for the ollama.com cloud endpoint."
+        throw "OLLAMA_API_KEY environment variable is required for the Ollama cloud endpoint."
     }
-        Write-Log "requesting Ollama cloud model: $OllamaModel"
-        $headers = @{ Authorization = "Bearer $env:OLLAMA_API_KEY" }
-        $body = @{ name = $OllamaModel } | ConvertTo-Json -Compress
-        $pullUri = if ($OllamaUri -match '/v1$') { "$OllamaUri/models/$OllamaModel/pull" } else { "$OllamaUri/api/pull" }
+    Write-Log "verifying Ollama cloud model: $OllamaModel"
     try {
-        # Streamed response; we just kick it off and wait for it to complete.
-        $null = Invoke-RestMethod -Uri $pullUri -Method Post -Headers $headers -Body $body -TimeoutSec 300 -ErrorAction Stop
-        Write-Log "pull requested for $OllamaModel"
+        $headers = @{ Authorization = "Bearer $env:OLLAMA_API_KEY" }
+        $response = Invoke-RestMethod -Uri "$OllamaApiUrl/v1/models" -Method Get -Headers $headers -TimeoutSec 30 -ErrorAction Stop
+        $modelIds = $response.data | ForEach-Object { $_.id }
+        if ($modelIds -contains $OllamaModel) {
+            Write-Log "$OllamaModel is available in Ollama cloud"
+        } else {
+            Write-Log "warning: $OllamaModel was not found in the Ollama cloud model list; it may still be accessible"
+        }
     } catch {
-        # Some providers return non-stream success shapes; treat as warning rather than fatal.
-        Write-Log "warning: pull API call returned an error/warning: $_"
+        Write-Log "warning: could not verify $OllamaModel in Ollama cloud"
     }
 }
 
@@ -155,11 +160,11 @@ function Show-NextSteps {
     Write-Log "setup complete"
     Write-Host ""
     Write-Host "Run 'pi' in this directory to start a session with the configured setup."
-    Write-Host "Default model: $OllamaModel via Ollama cloud (ollama.com)."
+    Write-Host "Default model: $OllamaModel via Ollama cloud."
     Write-Host ""
     Write-Host "Make sure OLLAMA_API_KEY is set in your environment."
     Write-Host "To use a different default model, set OLLAMA_MODEL and re-run:"
-    Write-Host "  `$env:OLLAMA_MODEL='kimi-k2.7-code'; `$env:OLLAMA_API_KEY='<key>'; .\install.ps1"
+    Write-Host "  `$env:OLLAMA_MODEL='kimi-k3'; `$env:OLLAMA_API_KEY='<key>'; .\install.ps1"
 }
 
 function Main {
@@ -173,7 +178,7 @@ function Main {
     }
     if (-not $SkipOllama) {
         if (-not (Test-OllamaReachable)) {
-            Write-Log "warning: could not reach $OllamaUri with OLLAMA_API_KEY; continuing anyway"
+            throw "could not reach $OllamaApiUrl/v1/models with OLLAMA_API_KEY"
         }
         Pull-OllamaModel
     }

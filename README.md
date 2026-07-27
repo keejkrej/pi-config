@@ -10,7 +10,7 @@ This repository automates the Pi coding-agent configuration shown in the screens
 - `pi-mcp-adapter`
 - `@sampfp/pi-essentials`
 
-It also wires up an Ollama local provider so `pi` can launch against Ollama models.
+It also wires up an Ollama cloud provider pointing at `https://ollama.com/v1` so `pi` can use cloud models with an `OLLAMA_API_KEY`.
 
 ## Quick start
 
@@ -31,9 +31,9 @@ sh install.sh
 1. Checks for Node.js and npm (required by Pi).
 2. Installs or updates the Pi coding-agent CLI globally.
 3. Makes sure the Pi agent directory exists (`~/.pi/agent/` on Unix, `%USERPROFILE%\.pi\agent\` on Windows).
-4. Copies `models.json` to the Pi agent directory, adding an `ollama` provider pointing at `http://localhost:11434/v1`.
+4. Copies `models.json` to the Pi agent directory, adding an `ollama` provider pointing at `https://ollama.com/v1`.
 5. Copies `.pi/settings.json` into the current project (this repo) so project-local settings and packages are loaded when you run `pi` here.
-6. Optionally starts Ollama and pulls a default model (`kimi-k2.7-code:cloud` by default).
+6. Verifies the Ollama cloud endpoint and API key, then checks the default model (`kimi-k2.7-code` by default).
 7. Runs `pi update --all` to install the configured packages.
 
 ## Running Pi
@@ -60,4 +60,4 @@ Pi will load the Ollama provider and the configured extensions automatically for
 
 - Edit `.pi/settings.json` to change the default model, thinking level, or package list.
 - Edit `models.json` (and re-run the installer, or copy it to `~/.pi/agent/models.json`) to add/remove Ollama models.
-- Set the environment variable `OLLAMA_MODEL` before running the installer to change the default pulled model, e.g. `OLLAMA_MODEL=llama3.1:8b sh install.sh` or `$env:OLLAMA_MODEL='llama3.1:8b'; .\install.ps1` on Windows.
+- Set the environment variable `OLLAMA_MODEL` before running the installer to change the default model, e.g. `OLLAMA_MODEL=kimi-k3 sh install.sh` or `$env:OLLAMA_MODEL='kimi-k3'; $env:OLLAMA_API_KEY='<key>'; .\install.ps1` on Windows. Make sure `OLLAMA_API_KEY` is exported in your environment.

@@ -1,6 +1,6 @@
 {
   "$schema": "https://pi.dev/schema/models.json",
-  "comment": "Global Ollama provider pointing at ollama.com cloud API. Installed into ~/.pi/agent/models.json by install.ps1/install.sh.",
+  "comment": "Global Ollama cloud provider pointing at ollama.com/v1. Model IDs match the /v1/models API list.",
   "providers": {
     "ollama": {
       "baseUrl": "https://ollama.com/v1",
@@ -12,8 +12,53 @@
       },
       "models": [
         {
+          "id": "kimi-k2.7-code",
+          "name": "Kimi K2.7 Code",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 256000,
+          "maxTokens": 8192,
+          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
+        },
+        {
+          "id": "kimi-k3",
+          "name": "Kimi K3",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 1000000,
+          "maxTokens": 16384,
+          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
+        },
+        {
+          "id": "gemma4:31b",
+          "name": "Gemma 4 31B",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 256000,
+          "maxTokens": 8192,
+          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
+        },
+        {
+          "id": "qwen3.5:397b",
+          "name": "Qwen 3.5 397B",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 256000,
+          "maxTokens": 8192,
+          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
+        },
+        {
+          "id": "deepseek-v4-pro",
+          "name": "DeepSeek V4 Pro",
+          "reasoning": true,
+          "input": ["text"],
+          "contextWindow": 1000000,
+          "maxTokens": 16384,
+          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
+        },
+        {
           "id": "gpt-oss:120b",
-          "name": "GPT-OSS 120B (Ollama Cloud)",
+          "name": "GPT-OSS 120B",
           "reasoning": true,
           "input": ["text"],
           "contextWindow": 128000,
@@ -21,8 +66,26 @@
           "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
         },
         {
-          "id": "kimi-k2.7-code",
-          "name": "Kimi K2.7 Code (Ollama Cloud)",
+          "id": "glm-5.2",
+          "name": "GLM 5.2",
+          "reasoning": true,
+          "input": ["text"],
+          "contextWindow": 976000,
+          "maxTokens": 16384,
+          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
+        },
+        {
+          "id": "minimax-m3",
+          "name": "MiniMax M3",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 512000,
+          "maxTokens": 16384,
+          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
+        },
+        {
+          "id": "nemotron-3-ultra",
+          "name": "Nemotron 3 Ultra",
           "reasoning": true,
           "input": ["text"],
           "contextWindow": 256000,
@@ -30,39 +93,12 @@
           "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
         },
         {
-          "id": "qwen2.5-coder:7b",
-          "name": "Qwen 2.5 Coder 7B (Ollama)",
-          "reasoning": false,
-          "input": ["text"],
-          "contextWindow": 128000,
-          "maxTokens": 8192,
-          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
-        },
-        {
-          "id": "llama3.1:8b",
-          "name": "Llama 3.1 8B (Ollama)",
-          "reasoning": false,
-          "input": ["text"],
-          "contextWindow": 128000,
-          "maxTokens": 4096,
-          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
-        },
-        {
-          "id": "gemma3:4b",
-          "name": "Gemma 3 4B (Ollama)",
+          "id": "mistral-large-3:675b",
+          "name": "Mistral Large 3 675B",
           "reasoning": false,
           "input": ["text", "image"],
-          "contextWindow": 128000,
-          "maxTokens": 4096,
-          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
-        },
-        {
-          "id": "gpt-oss:20b",
-          "name": "GPT-OSS 20B (Ollama)",
-          "reasoning": true,
-          "input": ["text"],
-          "contextWindow": 128000,
-          "maxTokens": 4096,
+          "contextWindow": 256000,
+          "maxTokens": 8192,
           "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
         }
       ]
