@@ -1,0 +1,3 @@
+# Pi project-local install artifacts
+.pi/npm/
+node_modules/

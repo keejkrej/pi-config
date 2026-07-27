@@ -95,12 +95,15 @@ ensure_ollama() {
 
 install_packages() {
   log "installing pi packages..."
-  pi update --all || true
-  # If project settings were just written, pi should pick them up on next launch.
-  # The following explicit installs are a safety net in case --all is slow/fails.
-  for pkg in @plannotator/pi-extension @ff-labs/pi-fff pi-web-extension pi-cursor-sdk pi-thinking-steps pi-mcp-adapter @samfp/pi-essentials; do
-    pi install "npm:$pkg" || log "warning: failed to install npm:$pkg (may already be installed or unavailable)"
-  done
+  # Run pi package commands from $HOME so they use global user settings
+  # instead of installing project-local copies in this repo.
+  (
+    cd "$HOME"
+    pi update --all || true
+    for pkg in @plannotator/pi-extension @ff-labs/pi-fff pi-web-extension pi-cursor-sdk pi-thinking-steps pi-mcp-adapter @samfp/pi-essentials; do
+      pi install "npm:$pkg" || log "warning: failed to install npm:$pkg (may already be installed or unavailable)"
+    done
+  )
 }
 
 print_next_steps() {

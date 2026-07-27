@@ -125,27 +125,35 @@ function Pull-OllamaModel {
 
 function Install-PiPackages {
     Write-Log "installing pi packages..."
+    # Run pi package commands from the user profile so they use global user
+    # settings instead of installing project-local copies in this repo.
+    $originalLocation = Get-Location
     try {
-        pi update --all 2>$null
-    } catch {
-        Write-Log "warning: pi update --all failed, will try individual installs"
-    }
-    $packages = @(
-        '@plannotator/pi-extension',
-        '@ff-labs/pi-fff',
-        'pi-web-extension',
-        'pi-cursor-sdk',
-        'pi-thinking-steps',
-        'pi-mcp-adapter',
-        '@samfp/pi-essentials'
-    )
-    foreach ($pkg in $packages) {
+        Set-Location $env:USERPROFILE
         try {
-            pi install "npm:$pkg" 2>$null
-            Write-Log "installed npm:$pkg"
+            pi update --all 2>$null
         } catch {
-            Write-Log "warning: failed to install npm:$pkg (may already be installed or unavailable)"
+            Write-Log "warning: pi update --all failed, will try individual installs"
         }
+        $packages = @(
+            '@plannotator/pi-extension',
+            '@ff-labs/pi-fff',
+            'pi-web-extension',
+            'pi-cursor-sdk',
+            'pi-thinking-steps',
+            'pi-mcp-adapter',
+            '@samfp/pi-essentials'
+        )
+        foreach ($pkg in $packages) {
+            try {
+                pi install "npm:$pkg" 2>$null
+                Write-Log "installed npm:$pkg"
+            } catch {
+                Write-Log "warning: failed to install npm:$pkg (may already be installed or unavailable)"
+            }
+        }
+    } finally {
+        Set-Location $originalLocation
     }
 }
 
