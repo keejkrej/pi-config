@@ -139,7 +139,6 @@ function Install-PiPackages {
             '@plannotator/pi-extension',
             '@ff-labs/pi-fff',
             'pi-web-extension',
-            'pi-cursor-sdk',
             'pi-thinking-steps',
             'pi-mcp-adapter',
             '@samfp/pi-essentials'

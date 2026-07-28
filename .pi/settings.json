@@ -30,7 +30,6 @@
     "npm:@plannotator/pi-extension",
     "npm:@ff-labs/pi-fff",
     "npm:pi-web-extension",
-    "npm:pi-cursor-sdk",
     "npm:pi-thinking-steps",
     "npm:pi-mcp-adapter",
     "npm:@samfp/pi-essentials"

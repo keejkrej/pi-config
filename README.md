@@ -5,7 +5,6 @@ This repository automates the Pi coding-agent configuration shown in the screens
 - `@plannotator/pi-extension`
 - `@ff-labs/pi-fff`
 - `pi-web-extension`
-- `pi-cursor-sdk`
 - `pi-thinking-steps`
 - `pi-mcp-adapter`
 - `@samfp/pi-essentials`
