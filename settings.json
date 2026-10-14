@@ -1,4 +1,5 @@
 {
-  "lastChangelogVersion": "1.2.0",
-  "defaultProvider": "ollama-cloud"
+  "defaultModel": "kimi-k3",
+  "defaultProvider": "ollama-cloud",
+  "lastChangelogVersion": "1.2.0"
 }
