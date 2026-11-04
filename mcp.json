@@ -1,0 +1,10 @@
+{
+  "$schema": "https://pi.dev/schemas/mcp.schema.json",
+  "mcpServers": {
+    "composio": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://connect.composio.dev/mcp"],
+      "description": "Composio: tools for hundreds of apps (Gmail, Slack, GitHub, Notion, Linear, etc.)"
+    }
+  }
+}

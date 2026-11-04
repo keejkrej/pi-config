@@ -1,5 +1,11 @@
 {
-  "defaultModel": "kimi-k3",
+  "defaultModel": "deepseek-v4.1-flash:1017",
   "defaultProvider": "ollama-cloud",
-  "lastChangelogVersion": "1.2.0"
+  "lastChangelogVersion": "1.5.0",
+  "packages": [
+    "npm:pi-ollama-cloud"
+  ],
+  "extensionChangelogVersions": {
+    "{\"source\":\"npm:pi-ollama-cloud\",\"scope\":\"user\"}": "0.13.1"
+  }
 }
