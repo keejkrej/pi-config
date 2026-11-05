@@ -1,5 +1,5 @@
 {
-  "defaultModel": "deepseek-v4.1-flash:1017",
+  "defaultModel": "kimi-k3.1-pro",
   "defaultProvider": "ollama-cloud",
   "lastChangelogVersion": "1.5.0",
   "packages": [
