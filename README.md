@@ -7,7 +7,7 @@ Portable config for [pi](https://pi.dev), mirrored into `~/.pi/agent/`.
 | File | Purpose | Secrets? |
 | --- | --- | --- |
 | `settings.json` | Defaults, installed extension packages, changelog versions | no |
-| `mcp.json` | MCP servers (composio via `mcp-remote`) | no |
+| `mcp.json` | MCP servers (composio, paper via `mcp-remote`) | no |
 | `auth.json` | Provider credentials — **template only**, key is empty | no (keep it empty) |
 
 ## New machine
