@@ -10,6 +10,18 @@
       "command": "npx",
       "args": ["-y", "mcp-remote", "https://mcp.paper.design"],
       "description": "Paper: read and edit Paper design files, pages, nodes, styles, and tokens"
+    },
+    "ambient": {
+      "url": "http://127.0.0.1:8765/mcp",
+      "description": "Ambient: my private memory of projects, people, decisions and recurring workflows, recent activity and redacted capture. Search it before work on my projects; save durable facts with memory_save.",
+      "exposure": "deferred",
+      "toolExposure": {
+        "memory_search": "direct",
+        "memory_show": "direct",
+        "memory_save": "direct",
+        "activity_search": "direct",
+        "activity_show": "direct"
+      }
     }
   }
 }

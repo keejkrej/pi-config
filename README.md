@@ -7,7 +7,8 @@ Portable config for [pi](https://pi.dev), mirrored into `~/.pi/agent/`.
 | File | Purpose | Secrets? |
 | --- | --- | --- |
 | `settings.json` | Defaults, installed extension packages, changelog versions | no |
-| `mcp.json` | MCP servers (composio, paper via `mcp-remote`) | no |
+| `mcp.json` | MCP servers (composio, paper via `mcp-remote`; ambient over local HTTP) | no |
+| `AGENTS.md` | User instructions loaded in every session: the Ambient memory block | no |
 | `auth.json` | Provider credentials — **template only**, key is empty | no (keep it empty) |
 
 ## New machine
@@ -25,6 +26,18 @@ Copy the tracked files into `~/.pi/agent/`, then paste the Ollama Cloud API key 
 ```
 
 Then launch pi — the `pi-ollama-cloud` extension refreshes the catalog on first run.
+
+## Ambient memory
+
+The `ambient` server is the MCP endpoint inside the running [Ambient](https://alexandria.so)
+desktop app (`http://127.0.0.1:8765/mcp`); its tools are unavailable when the app is closed.
+The memory tools (`memory_search`, `memory_show`, `memory_save`, `activity_search`,
+`activity_show`) are declared directly; the rest load through `tool_search`.
+
+`AGENTS.md` holds the same "always check Ambient memory" block Ambient writes into
+Claude Code's `CLAUDE.md` and Codex's `AGENTS.md`. Ambient does not manage pi, so the
+block is not refreshed when the app's wording changes: copy it again from
+`ambient-app/electron/agent-global-instructions.ts` when needed.
 
 ## Model catalog
 
