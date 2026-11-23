@@ -7,7 +7,7 @@ Portable config for [pi](https://pi.dev), mirrored into `~/.pi/agent/`.
 | File | Purpose | Copy to |
 | --- | --- | --- |
 | `mcp.json` | MCP servers (paper via local `paper mcp`; ambient over local HTTP; mobbin, OAuth via `pi mcp login mobbin`) | `~/.pi/agent/mcp.json` |
-| `AGENTS.md` | Global instructions loaded in every session: the Ambient memory block | `~/.pi/agent/AGENTS.md` (optionally also `~/.config/opencode/AGENTS.md`) |
+| `AGENTS.md` | Global instructions loaded in every session: the Ambient memory block | `~/.pi/agent/AGENTS.md` |
 
 Provider credentials (`auth.json`) and settings (`settings.json`) are machine-local and not
 tracked; never commit `auth.json`.
@@ -29,11 +29,8 @@ The memory tools (`memory_search`, `memory_show`, `memory_save`, `activity_searc
 `activity_show`) are declared directly; the rest load through `tool_search`.
 
 `AGENTS.md` holds the same "always check Ambient memory" block Ambient writes into
-Claude Code's `CLAUDE.md` and Codex's `AGENTS.md`. Ambient manages neither pi nor
-opencode, so copy it into both global instruction files yourself:
-
-- pi: `~/.pi/agent/AGENTS.md`
-- opencode (optional): `~/.config/opencode/AGENTS.md`
+Claude Code's `CLAUDE.md` and Codex's `AGENTS.md`. Ambient does not manage pi,
+so copy it into `~/.pi/agent/AGENTS.md` yourself.
 
 The block is not refreshed when the app's wording changes: copy it again from
 `ambient-app/electron/agent-global-instructions.ts` when needed.
