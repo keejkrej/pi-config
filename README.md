@@ -6,7 +6,7 @@ Portable config for [pi](https://pi.dev), mirrored into `~/.pi/agent/`.
 
 | File | Purpose | Copy to |
 | --- | --- | --- |
-| `mcp.json` | MCP servers (paper via local `paper mcp`; ambient over local HTTP; mobbin, OAuth via `pi mcp login mobbin`) | `~/.pi/agent/mcp.json` |
+| `mcp.json` | MCP servers (paper via local `paper mcp`; ambient over local HTTP; mobbin, OAuth via `pi mcp login mobbin`; browse via local `browse mcp`) | `~/.pi/agent/mcp.json` |
 | `AGENTS.md` | Global instructions loaded in every session: the Ambient memory block | `~/.pi/agent/AGENTS.md` |
 
 Provider credentials (`auth.json`) and settings (`settings.json`) are machine-local and not
@@ -18,6 +18,8 @@ Copy the tracked files into `~/.pi/agent/`, then sign in to your providers in pi
 
 The `paper` server runs the `paper` CLI that Paper Desktop installs into `~/.paper/bin`;
 add that directory to `PATH` (on Windows: `%USERPROFILE%\.paper\bin` in the user `Path`).
+The `browse` server runs the `browse` CLI from `~/.local/bin`; keep that directory on `PATH`
+(on Windows: `%USERPROFILE%\.local\bin`) and install the browse extension in your Chrome-family browser.
 Sign in to Mobbin once with `pi mcp login mobbin` (Pro/Team/Enterprise plan required).
 Check everything with `pi mcp list`.
 
