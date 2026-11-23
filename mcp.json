@@ -1,15 +1,10 @@
 {
   "$schema": "https://pi.dev/schemas/mcp.schema.json",
   "mcpServers": {
-    "composio": {
-      "command": "npx",
-      "args": ["-y", "mcp-remote", "https://connect.composio.dev/mcp"],
-      "description": "Composio: tools for hundreds of apps (Gmail, Slack, GitHub, Notion, Linear, etc.)"
-    },
     "paper": {
-      "command": "npx",
-      "args": ["-y", "mcp-remote", "https://mcp.paper.design"],
-      "description": "Paper: read and edit Paper design files, pages, nodes, styles, and tokens"
+      "command": "paper",
+      "args": ["mcp"],
+      "description": "Paper: read and edit Paper design files, pages, nodes, styles, and tokens (requires Paper Desktop running)"
     },
     "ambient": {
       "url": "http://127.0.0.1:8765/mcp",
@@ -22,6 +17,10 @@
         "activity_search": "direct",
         "activity_show": "direct"
       }
+    },
+    "mobbin": {
+      "url": "https://api.mobbin.com/mcp",
+      "description": "Mobbin: search real app screens, multi-step flows, and website sections from shipped products for design reference"
     }
   }
 }
