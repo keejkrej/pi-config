@@ -1,4 +1,4 @@
-<!-- ambient-memory:begin sha256=c7c187b0eaee · added by hand for pi; Ambient does not manage this file -->
+<!-- ambient-memory:begin sha256=c7c187b0eaee · added by hand for pi and opencode; Ambient does not manage this file -->
 ## Ambient memory
 
 Ambient keeps a private memory of my work (projects, people, decisions and recurring workflows), available through the `ambient` MCP server.
