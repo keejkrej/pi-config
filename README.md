@@ -7,7 +7,7 @@ Portable config for [pi](https://pi.dev), mirrored into `~/.pi/agent/`.
 | File | Purpose | Secrets? |
 | --- | --- | --- |
 | `settings.json` | Defaults, installed extension packages, changelog versions | no |
-| `mcp.json` | MCP servers (composio, paper via `mcp-remote`; ambient over local HTTP) | no |
+| `mcp.json` | MCP servers (paper via local `paper mcp`; ambient over local HTTP; mobbin, OAuth via `pi mcp login mobbin`) | no |
 | `AGENTS.md` | User instructions loaded in every session: the Ambient memory block | no |
 | `auth.json` | Provider credentials — **template only**, key is empty | no (keep it empty) |
 
@@ -26,6 +26,10 @@ Copy the tracked files into `~/.pi/agent/`, then paste the Ollama Cloud API key 
 ```
 
 Then launch pi — the `pi-ollama-cloud` extension refreshes the catalog on first run.
+
+The `paper` server runs the `paper` CLI that Paper Desktop installs into `~/.paper/bin`;
+add that directory to `PATH` (on Windows: `%USERPROFILE%\.paper\bin` in the user `Path`).
+Sign in to Mobbin once with `pi mcp login mobbin` (Pro/Team/Enterprise plan required).
 
 ## Ambient memory
 
