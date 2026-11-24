@@ -1,6 +1,6 @@
 # Apply pi configuration from this repo (Windows / PowerShell).
 # Copies mcp.json, AGENTS.md and the reviewer agent, and registers the subagent
-# extension bundled with pi in settings.json so the reviewer can be spawned.
+# extension bundled with pi and the Codex speed settings in settings.json.
 [CmdletBinding()]
 param(
   [string]$PiDir = (Join-Path $HOME ".pi\agent")
@@ -31,29 +31,8 @@ function Copy-File($Src, $Dest) {
   Write-Host "    copied $leaf"
 }
 
-# The bundled extension lives under a version-pinned path, so resolve it from the
-# installed version every time and replace any stale entry.
-function Register-SubagentExtension {
-  $versionFile = Join-Path $PiDir "install\current-version"
-  if (-not (Test-Path $versionFile)) {
-    Write-Host "!! $versionFile not found; add the subagent extension to `"extensions`" in $PiDir\settings.json by hand" -ForegroundColor Yellow
-    return
-  }
-  $version = ((Get-Content -Raw $versionFile) -replace '\s', '')
-  $entry = "install/releases/$version/node_modules/@earendil-works/pi-coding-agent/examples/extensions/subagent/index.ts"
-  if (-not (Test-Path (Join-Path $PiDir $entry))) {
-    Write-Host "!! bundled subagent extension not found at $PiDir\$entry" -ForegroundColor Yellow
-    return
-  }
-  $settingsFile = Join-Path $PiDir "settings.json"
-  $settings = New-Object PSObject
-  if (Test-Path $settingsFile) { $settings = Get-Content -Raw $settingsFile | ConvertFrom-Json }
-  $existing = @()
-  if ($settings.PSObject.Properties['extensions']) { $existing = @($settings.extensions) }
-  $filtered = @($existing | Where-Object { $_ -notlike '*examples/extensions/subagent/*' })
-  $settings | Add-Member -NotePropertyName extensions -NotePropertyValue @($filtered + $entry) -Force
-  [System.IO.File]::WriteAllText($settingsFile, (($settings | ConvertTo-Json -Depth 10) + "`n"))
-  Write-Host "    registered subagent extension (pi $version) in settings.json"
+if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
+  throw "Node.js is required to merge Pi settings"
 }
 
 Write-Host "==> Applying pi config from $Here -> $PiDir"
@@ -69,7 +48,8 @@ if (Test-Path $agentsDir) {
     Copy-File $_.FullName (Join-Path $agentsDest $_.Name)
   }
 }
-Register-SubagentExtension
+node (Join-Path $Here "scripts/merge-settings.cjs") $PiDir
+if ($LASTEXITCODE -ne 0) { throw "Failed to merge Pi settings" }
 
 Write-Host ""
 Write-Host "==> Done. Installed:"

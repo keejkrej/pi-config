@@ -1,0 +1,7 @@
+{
+  "packages": ["npm:@calesennett/pi-codex-fast@0.1.14"],
+  "pi-codex-fast": {
+    "enabled": true,
+    "mode": "ultrafast"
+  }
+}

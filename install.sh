@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Apply pi configuration from this repo into ~/.pi/agent.
 # Copies mcp.json, AGENTS.md and the reviewer agent, and registers the subagent
-# extension bundled with pi in settings.json so the reviewer can be spawned.
+# extension bundled with pi and the Codex speed settings in settings.json.
 set -euo pipefail
 
 PI_DIR="${PI_DIR:-$HOME/.pi/agent}"
@@ -27,35 +27,10 @@ copy_file() {
   echo "    copied $(basename "$dest")"
 }
 
-# The bundled extension lives under a version-pinned path, so resolve it from the
-# installed version every time and replace any stale entry. Needs node for the JSON.
-register_subagent_extension() {
-  local version_file="$PI_DIR/install/current-version" version entry
-  if ! command -v node >/dev/null 2>&1; then
-    echo "!! node not found; add the subagent extension to \"extensions\" in $PI_DIR/settings.json by hand" >&2
-    return
-  fi
-  if [ ! -f "$version_file" ]; then
-    echo "!! $version_file not found; add the subagent extension to \"extensions\" in $PI_DIR/settings.json by hand" >&2
-    return
-  fi
-  version="$(tr -d '[:space:]' < "$version_file")"
-  entry="install/releases/$version/node_modules/@earendil-works/pi-coding-agent/examples/extensions/subagent/index.ts"
-  if [ ! -f "$PI_DIR/$entry" ]; then
-    echo "!! bundled subagent extension not found at $PI_DIR/$entry" >&2
-    return
-  fi
-  node -e '
-    const fs = require("fs");
-    const [file, entry] = process.argv.slice(1);
-    let settings = {};
-    try { settings = JSON.parse(fs.readFileSync(file, "utf8")); } catch (err) { if (err.code !== "ENOENT") throw err; }
-    const others = (Array.isArray(settings.extensions) ? settings.extensions : []).filter((e) => !e.includes("examples/extensions/subagent/"));
-    settings.extensions = [...others, entry];
-    fs.writeFileSync(file, JSON.stringify(settings, null, 2) + "\n");
-  ' "$PI_DIR/settings.json" "$entry"
-  echo "    registered subagent extension (pi $version) in settings.json"
-}
+if ! command -v node >/dev/null 2>&1; then
+  echo "!! Node.js is required to merge Pi settings" >&2
+  exit 1
+fi
 
 echo "==> Applying pi config from $HERE -> $PI_DIR"
 mkdir -p "$PI_DIR/agents"
@@ -66,7 +41,7 @@ for agent_file in "$HERE"/agents/*.md; do
   [ -e "$agent_file" ] || continue
   copy_file "$agent_file" "$PI_DIR/agents/$(basename "$agent_file")"
 done
-register_subagent_extension
+node "$HERE/scripts/merge-settings.cjs" "$PI_DIR"
 
 echo
 echo "==> Done. Installed:"
