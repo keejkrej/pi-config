@@ -9,15 +9,16 @@ Portable config for [pi](https://pi.dev), mirrored into `~/.pi/agent/`.
 | `mcp.json` | MCP servers (paper via local `paper mcp`; ambient over local HTTP; mobbin through `mcp-remote`, which owns the OAuth login; browse via local `browse mcp`) | `~/.pi/agent/mcp.json` |
 | `AGENTS.md` | Global instructions loaded in every session: the Ambient memory block plus a short "review before done" rule | `~/.pi/agent/AGENTS.md` |
 | `agents/reviewer.md` | `reviewer` agent for the bundled `subagent` extension: an independent, read-only code reviewer with the same brief as the other agents' reviewers | `~/.pi/agent/agents/reviewer.md` |
+| `codex-fast.settings.json` | Pinned `pi-codex-fast` package and saved Ultrafast mode | Merged into `~/.pi/agent/settings.json` by the installers |
 
-Provider credentials (`auth.json`) and settings (`settings.json`) are machine-local and not
-tracked; never commit `auth.json`.
+The full `settings.json` stays machine-local. Never commit provider credentials (`auth.json`).
 
 ## New machine
 
 Run `./install.sh` (Git Bash, macOS, Linux) or `./install.ps1` (PowerShell): they copy the files
 into `~/.pi/agent/`, back up anything they replace as `*.bak.<timestamp>`, and register the
-`subagent` extension in `settings.json` (the `.sh` variant needs Node.js for that step). Nothing is
+`subagent` extension and merge the Codex speed settings into `settings.json` (both installers
+need Node.js 18 or newer for those steps). Pi installs the pinned package at startup. Nothing is
 linked, so re-run the installer after editing, and after every pi upgrade, since the extension path
 is pinned to the installed version. Then sign in to your providers in pi.
 
@@ -32,6 +33,11 @@ is no `pi mcp login`. On Windows, `npx` must resolve to a real executable (mise 
 npm's own `npx.cmd` cannot be spawned without a shell, and the documented workaround is
 `cmd /c npx -y mcp-remote …`.
 Check everything with `pi mcp list`.
+
+## Codex speed
+
+The installers set `@calesennett/pi-codex-fast` to request Ultrafast on supported models.
+Use `/codex-ultrafast` in Pi to toggle it. The server decides which tier actually serves a request.
 
 ## Ambient memory
 
