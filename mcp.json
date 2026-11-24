@@ -19,8 +19,9 @@
       }
     },
     "mobbin": {
-      "url": "https://api.mobbin.com/mcp",
-      "description": "Mobbin: search real app screens, multi-step flows, and website sections from shipped products for design reference"
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://api.mobbin.com/mcp"],
+      "description": "Mobbin: search real app screens, multi-step flows, and website sections from shipped products for design reference (OAuth handled by mcp-remote)"
     },
     "browse": {
       "command": "browse",
