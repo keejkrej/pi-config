@@ -11,6 +11,7 @@ Portable config for [pi](https://pi.dev), mirrored into `~/.pi/agent/`.
 | `agents/reviewer.md` | `reviewer` agent for the bundled `subagent` extension: an independent, read-only code reviewer with the same brief as the other agents' reviewers | `~/.pi/agent/agents/reviewer.md` |
 | `codex-fast.settings.json` | Pinned `pi-codex-fast` package and saved Ultrafast mode | Merged into `~/.pi/agent/settings.json` by the installers |
 | `pi-memory.settings.json` | Pinned `pi-memory` extension | Merged into `~/.pi/agent/settings.json` by the installers |
+| `pi-goal.settings.json` | Pinned `@narumitw/pi-goal` extension | Merged into `~/.pi/agent/settings.json` by the installers |
 
 The full `settings.json` stays machine-local. Never commit provider credentials (`auth.json`).
 
@@ -66,6 +67,12 @@ by this repo.
 By default, `pi-memory` can send session context to the configured model for an exit
 summary and save that summary in its local daily log. To turn off exit summaries, set
 `PI_MEMORY_EXIT_SUMMARY=0` in the environment before launching Pi.
+
+## Pi Goal
+
+Use `/goal <objective>` to start a session goal or `/goal` to manage it. Goal mode
+can run additional paid model turns and use active tools. The installers leave
+machine-local `pi-goal.json` settings alone.
 
 ## Reviewer
 
