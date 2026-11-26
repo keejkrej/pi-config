@@ -1,6 +1,6 @@
 # Apply pi configuration from this repo (Windows / PowerShell).
 # Copies mcp.json, AGENTS.md and the reviewer agent, and registers the subagent
-# extension bundled with pi and the Codex speed settings in settings.json.
+# extension bundled with pi and the pinned package settings in settings.json.
 [CmdletBinding()]
 param(
   [string]$PiDir = (Join-Path $HOME ".pi\agent")
@@ -56,7 +56,7 @@ Write-Host "==> Done. Installed:"
 Write-Host "    $PiDir\mcp.json         <- $Here\mcp.json"
 Write-Host "    $PiDir\AGENTS.md        <- $Here\AGENTS.md"
 Write-Host "    $PiDir\agents\*.md      <- $Here\agents"
-Write-Host "    $PiDir\settings.json    `"extensions`" entry for the bundled subagent extension"
+Write-Host "    $PiDir\settings.json    bundled subagent extension and pinned package settings"
 Write-Host ""
 Write-Host "==> Notes:"
 Write-Host "    Sign in to your providers in pi."
