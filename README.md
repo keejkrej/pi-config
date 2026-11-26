@@ -10,6 +10,7 @@ Portable config for [pi](https://pi.dev), mirrored into `~/.pi/agent/`.
 | `AGENTS.md` | Global instructions loaded in every session: the Ambient memory block plus a short "review before done" rule | `~/.pi/agent/AGENTS.md` |
 | `agents/reviewer.md` | `reviewer` agent for the bundled `subagent` extension: an independent, read-only code reviewer with the same brief as the other agents' reviewers | `~/.pi/agent/agents/reviewer.md` |
 | `codex-fast.settings.json` | Pinned `pi-codex-fast` package and saved Ultrafast mode | Merged into `~/.pi/agent/settings.json` by the installers |
+| `pi-memory.settings.json` | Pinned `pi-memory` extension | Merged into `~/.pi/agent/settings.json` by the installers |
 
 The full `settings.json` stays machine-local. Never commit provider credentials (`auth.json`).
 
@@ -17,8 +18,8 @@ The full `settings.json` stays machine-local. Never commit provider credentials 
 
 Run `./install.sh` (Git Bash, macOS, Linux) or `./install.ps1` (PowerShell): they copy the files
 into `~/.pi/agent/`, back up anything they replace as `*.bak.<timestamp>`, and register the
-`subagent` extension and merge the Codex speed settings into `settings.json` (both installers
-need Node.js 18 or newer for those steps). Pi installs the pinned package at startup. Nothing is
+`subagent` extension and merge the package settings into `settings.json` (both installers
+need Node.js 18 or newer for those steps). Pi installs the pinned packages at startup. Nothing is
 linked, so re-run the installer after editing, and after every pi upgrade, since the extension path
 is pinned to the installed version. Then sign in to your providers in pi.
 
@@ -52,6 +53,19 @@ so copy it into `~/.pi/agent/AGENTS.md` yourself.
 
 The block is not refreshed when the app's wording changes: copy it again from
 `ambient-app/electron/agent-global-instructions.ts` when needed.
+
+## Pi Memory
+
+[`pi-memory`](https://github.com/jayzeng/pi-memory) stores local Markdown notes and a
+scratchpad under `~/.pi/agent/memory/`. It is separate from Ambient, which remains
+configured and is still the first place to look for project context. Ask Pi to run
+`memory_status` after restarting or running `/reload`. The extension requires Node.js
+22.19.0 or newer. The optional qmd dependency for searching local notes is not installed
+by this repo.
+
+By default, `pi-memory` can send session context to the configured model for an exit
+summary and save that summary in its local daily log. To turn off exit summaries, set
+`PI_MEMORY_EXIT_SUMMARY=0` in the environment before launching Pi.
 
 ## Reviewer
 

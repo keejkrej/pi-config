@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Apply pi configuration from this repo into ~/.pi/agent.
 # Copies mcp.json, AGENTS.md and the reviewer agent, and registers the subagent
-# extension bundled with pi and the Codex speed settings in settings.json.
+# extension bundled with pi and the pinned package settings in settings.json.
 set -euo pipefail
 
 PI_DIR="${PI_DIR:-$HOME/.pi/agent}"
@@ -48,7 +48,7 @@ echo "==> Done. Installed:"
 echo "    $PI_DIR/mcp.json         <- $HERE/mcp.json"
 echo "    $PI_DIR/AGENTS.md        <- $HERE/AGENTS.md"
 echo "    $PI_DIR/agents/*.md      <- $HERE/agents/*.md"
-echo "    $PI_DIR/settings.json    \"extensions\" entry for the bundled subagent extension"
+echo "    $PI_DIR/settings.json    bundled subagent extension and pinned package settings"
 echo
 echo "==> Notes:"
 echo "    Sign in to your providers in pi."

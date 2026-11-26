@@ -6,8 +6,7 @@ const [piDir] = process.argv.slice(2);
 assert(piDir, 'Expected the Pi agent directory');
 const file = path.join(piDir, 'settings.json');
 const fragment = require('../codex-fast.settings.json');
-const [pkg] = fragment.packages;
-const name = pkg.slice(0, pkg.lastIndexOf('@'));
+const memory = require('../pi-memory.settings.json');
 let original;
 try {
   original = fs.readFileSync(file, 'utf8');
@@ -17,21 +16,24 @@ try {
 const settings = original === undefined ? {} : JSON.parse(original.replace(/^\uFEFF/, ''));
 const previous = structuredClone(settings);
 
-const packages = settings.packages ?? [];
-const remaining = [];
-let found = false;
-for (const entry of packages) {
-  const source = typeof entry === 'string' ? entry : entry?.source;
-  const normalized = source?.trim().replace(/^npm:\s*/, 'npm:');
-  if (normalized !== name && !normalized?.startsWith(name + '@')) {
-    remaining.push(entry);
-  } else if (!found) {
-    remaining.push(typeof entry === 'string' ? pkg : { ...entry, source: pkg });
-    found = true;
+function pinNpmPackage(packages, pkg) {
+  const name = pkg.slice(0, pkg.lastIndexOf('@'));
+  const remaining = [];
+  let found = false;
+  for (const entry of packages) {
+    const source = typeof entry === 'string' ? entry : entry?.source;
+    const normalized = source?.trim().replace(/^npm:\s*/, 'npm:');
+    if (normalized !== name && !normalized?.startsWith(name + '@')) {
+      remaining.push(entry);
+    } else if (!found) {
+      remaining.push(typeof entry === 'string' ? pkg : { ...entry, source: pkg });
+      found = true;
+    }
   }
+  if (!found) remaining.push(pkg);
+  return remaining;
 }
-if (!found) remaining.push(pkg);
-settings.packages = remaining;
+settings.packages = [...fragment.packages, ...memory.packages].reduce(pinNpmPackage, settings.packages ?? []);
 settings['pi-codex-fast'] = { ...settings['pi-codex-fast'], ...fragment['pi-codex-fast'] };
 
 const versionFile = path.join(piDir, 'install', 'current-version');
