@@ -7,6 +7,7 @@ assert(piDir, 'Expected the Pi agent directory');
 const file = path.join(piDir, 'settings.json');
 const fragment = require('../codex-fast.settings.json');
 const memory = require('../pi-memory.settings.json');
+const goal = require('../pi-goal.settings.json');
 let original;
 try {
   original = fs.readFileSync(file, 'utf8');
@@ -33,7 +34,7 @@ function pinNpmPackage(packages, pkg) {
   if (!found) remaining.push(pkg);
   return remaining;
 }
-settings.packages = [...fragment.packages, ...memory.packages].reduce(pinNpmPackage, settings.packages ?? []);
+settings.packages = [...fragment.packages, ...memory.packages, ...goal.packages].reduce(pinNpmPackage, settings.packages ?? []);
 settings['pi-codex-fast'] = { ...settings['pi-codex-fast'], ...fragment['pi-codex-fast'] };
 
 const versionFile = path.join(piDir, 'install', 'current-version');
