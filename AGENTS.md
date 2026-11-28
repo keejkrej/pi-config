@@ -12,6 +12,12 @@ Ambient keeps a private memory of my work (projects, people, decisions and recur
 - Write at a natural decision or task boundary, not every turn. Check saved=true before briefly telling the user what was remembered. If memory is unavailable, continue the task and do not claim a save.
 <!-- ambient-memory:end -->
 
-## Review before done
+## Primary-session orchestration
 
-After any non-trivial change, run the `reviewer` agent on the diff before reporting the task complete. Fix what it finds.
+In the primary session, coordinate the work; delegate implementation and command execution to `worker`, read-only file research to `scout`, and independent review to `reviewer`. Read and search files only as needed to scope tasks and assess results. Do not edit files, run commands or tests, or output implementation patches yourself.
+
+Use the bundled `subagent` tool with `{ agent: "worker", task: "..." }`; use `{ tasks: [{ agent: "worker", task: "..." }, ...] }` for independent, non-overlapping work. Give each task its objective, relevant context, constraints, and completion checks. Subagents have separate contexts but share the checkout: assign distinct files when running workers concurrently.
+
+After any non-trivial change, send the diff and requirements to `reviewer`. Delegate fixes to `worker` and review the corrected diff before reporting completion. Summarize the changes, checks actually run, and remaining risks.
+
+These orchestration rules apply only to the primary session. Delegated agents carry out their assigned role directly and do not delegate further. This is prompt discipline, not a permission sandbox; keep the existing model defaults.
