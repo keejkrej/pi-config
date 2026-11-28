@@ -7,7 +7,9 @@ Portable config for [pi](https://pi.dev), mirrored into `~/.pi/agent/`.
 | File | Purpose | Copy to |
 | --- | --- | --- |
 | `mcp.json` | MCP servers (paper via local `paper mcp`; ambient over local HTTP; mobbin through `mcp-remote`, which owns the OAuth login; browse via local `browse mcp`) | `~/.pi/agent/mcp.json` |
-| `AGENTS.md` | Global instructions loaded in every session: the Ambient memory block plus a short "review before done" rule | `~/.pi/agent/AGENTS.md` |
+| `AGENTS.md` | Ambient memory and primary-session orchestration instructions | `~/.pi/agent/AGENTS.md` |
+| `agents/worker.md` | Implementation and command execution role | `~/.pi/agent/agents/worker.md` |
+| `agents/scout.md` | Read-only file research role | `~/.pi/agent/agents/scout.md` |
 | `agents/reviewer.md` | `reviewer` agent for the bundled `subagent` extension: an independent, read-only code reviewer with the same brief as the other agents' reviewers | `~/.pi/agent/agents/reviewer.md` |
 | `codex-fast.settings.json` | Pinned `pi-codex-fast` package and saved Ultrafast mode | Merged into `~/.pi/agent/settings.json` by the installers |
 | `pi-memory.settings.json` | Pinned `pi-memory` extension | Merged into `~/.pi/agent/settings.json` by the installers |
@@ -74,12 +76,25 @@ Use `/goal <objective>` to start a session goal or `/goal` to manage it. Goal mo
 can run additional paid model turns and use active tools. The installers leave
 machine-local `pi-goal.json` settings alone.
 
-## Reviewer
+## Orchestration and review
 
 Pi has no built-in subagents. The installer points the `extensions` entry in `settings.json` at the
 `subagent` extension that ships with pi (`examples/extensions/subagent/index.ts`), which adds a
 `subagent` tool that runs an agent in a separate `pi` process with its own context. Agents live in
-`~/.pi/agent/agents/*.md`; this repo installs `reviewer.md` there with the same brief as the other
+`~/.pi/agent/agents/*.md`; this repo installs `worker.md`, `scout.md`, and `reviewer.md`. The reviewer has the same brief as the other
 agents' reviewers: read the diff, run the build or tests, report findings with file:line, never fix.
-It inherits the session model. `AGENTS.md` asks pi to run it on the diff before reporting any
-non-trivial change done.
+All three roles inherit the active session model and thinking level; there is no separate main
+agent or model override. The primary session scopes and delegates work rather than implementing:
+`subagent({ agent: "worker", task: "..." })` for implementation and commands,
+`subagent({ agent: "scout", task: "..." })` for read-only file research, and
+`subagent({ agent: "reviewer", task: "Review the diff against ..." })` before reporting
+non-trivial changes done. Use `tasks: [{ agent, task }, ...]` for independent parallel work.
+Separate contexts share the working directory, so concurrent workers need non-overlapping scopes.
+Delegated roles work directly rather than recursively orchestrating. These are prompt rules and
+per-role tool lists, not custom permission enforcement; reviewer retains bash for checks.
+
+For prompt-only updates on an existing machine, copy `AGENTS.md` and `agents/*.md` to their
+destinations above without running the full installer: it also replaces `mcp.json`, which may
+have machine-specific paths. If the bundled subagent registration is missing, run
+`node scripts/merge-settings.cjs "$HOME/.pi/agent"`; it preserves unrelated settings while
+also merging this repo's pinned package settings. Restart Pi or run `/reload` after updating.
